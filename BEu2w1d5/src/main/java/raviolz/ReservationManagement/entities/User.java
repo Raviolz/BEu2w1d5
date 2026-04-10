@@ -1,4 +1,4 @@
-package raviolz.BEu2w1d5.entities;
+package raviolz.ReservationManagement.entities;
 
 
 import jakarta.persistence.*;
@@ -12,6 +12,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
+@Table(name = "users")
 public class User {
 
     @Id

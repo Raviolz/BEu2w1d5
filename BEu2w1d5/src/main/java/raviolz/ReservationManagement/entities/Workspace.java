@@ -1,4 +1,4 @@
-package raviolz.BEu2w1d5.entities;
+package raviolz.ReservationManagement.entities;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
