@@ -7,4 +7,6 @@ import raviolz.ReservationManagement.entities.Workspace;
 
 @Repository
 public interface WorkspaceRepository extends JpaRepository<Workspace, Long> {
+
+    boolean existsByCode(String code);
 }

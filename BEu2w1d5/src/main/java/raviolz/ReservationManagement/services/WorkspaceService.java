@@ -1,9 +1,14 @@
 package raviolz.ReservationManagement.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import raviolz.ReservationManagement.entities.Workspace;
+import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
+import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.repositories.WorkspaceRepository;
 
 @Service
+@Slf4j
 public class WorkspaceService {
 
     private final WorkspaceRepository wsRepository;
@@ -11,5 +16,30 @@ public class WorkspaceService {
 
     public WorkspaceService(WorkspaceRepository wsRepository) {
         this.wsRepository = wsRepository;
+    }
+
+    public void saveWorkspace(Workspace newWorkspace) {
+        if (newWorkspace.getCode() == null || newWorkspace.getCode().isBlank()) {
+            throw new ValidationException("Codice obbligatorio");
+        }
+
+        if (newWorkspace.getWorkspaceType() == null) {
+            throw new ValidationException("Tipo obbligatorio");
+        }
+
+        if (newWorkspace.getMaxCapacity() <= 0) {
+            throw new ValidationException("Inutile salvarlo");
+        }
+
+        if (newWorkspace.getBuilding() == null) {
+            throw new ValidationException("E' obbligatorio indicare l edificio a cui appartiene ");
+        }
+
+        if (wsRepository.existsByCode(newWorkspace.getCode())) {
+            throw new AlreadyExistsException("Questa postazione e' gia salvata nel DB");
+        }
+
+        wsRepository.save(newWorkspace);
+        log.info("La workspace {} è stata salvata correttamente!", newWorkspace.getCode());
     }
 }

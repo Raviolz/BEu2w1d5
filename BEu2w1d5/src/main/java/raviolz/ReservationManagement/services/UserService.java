@@ -41,7 +41,7 @@ public class UserService {
         }
 
         uRepository.save(newUser);
-        log.info("Utente" + newUser.getUsername() + "salvato con successo!");
+        log.info("Utente{}salvato con successo!", newUser.getUsername());
     }
 
 }

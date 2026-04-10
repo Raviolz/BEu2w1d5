@@ -6,4 +6,6 @@ import raviolz.ReservationManagement.entities.Building;
 
 @Repository
 public interface BuildingRepository extends JpaRepository<Building, Long> {
+
+    boolean existsByAddress(String address);
 }

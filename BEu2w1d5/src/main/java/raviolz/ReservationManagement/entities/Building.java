@@ -25,6 +25,11 @@ public class Building {
     @Column(nullable = false)
     private String city;
 
+    public Building(String name, String address, String city) {
+        this.name = name;
+        this.address = address;
+        this.city = city;
+    }
 
     @Override
     public String toString() {
