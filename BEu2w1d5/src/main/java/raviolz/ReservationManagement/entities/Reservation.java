@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import raviolz.ReservationManagement.exceptions.ValidationException;
 
 import java.time.LocalDate;
 
@@ -40,7 +41,7 @@ public class Reservation {
 
     public void setResDate(LocalDate resDate) {
         if (resDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Non puoi cambiare data con giorno passato");
+            throw new ValidationException("Non puoi cambiare data con giorno passato");
         }
     }
 

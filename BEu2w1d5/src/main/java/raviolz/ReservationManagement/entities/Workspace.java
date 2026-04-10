@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import raviolz.ReservationManagement.exceptions.ValidationException;
 
 @NoArgsConstructor
 @Entity
@@ -53,7 +54,7 @@ public class Workspace {
 
     public void setMaxCapacity(int maxCapacity) {
         if (maxCapacity <= 0) {
-            throw new IllegalArgumentException("Inutile tenerlo disponibile se non utilizzabile");
+            throw new ValidationException("Inutile tenerlo disponibile se non utilizzabile");
         }
         this.maxCapacity = maxCapacity;
     }

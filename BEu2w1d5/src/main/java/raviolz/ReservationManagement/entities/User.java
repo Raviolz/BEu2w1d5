@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import raviolz.ReservationManagement.exceptions.ValidationException;
 
 
 @NoArgsConstructor
@@ -34,15 +35,15 @@ public class User {
         this.username = username;
         this.fullName = fullName;
         if (!email.contains("@")) {
-            throw new IllegalArgumentException("Devi inserire un email");
+            throw new ValidationException("Devi inserire un email");
         }
         this.email = email;
     }
 
 
     public void setEmail(String email) {
-        if (!email.contains("@")) {
-            throw new IllegalArgumentException("Email non valida");
+        if (email == null || !email.contains("@")) {
+            throw new ValidationException("Email non valida");
         }
         this.email = email;
     }
