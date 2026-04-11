@@ -5,10 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import raviolz.ReservationManagement.entities.Building;
+import raviolz.ReservationManagement.entities.Reservation;
+import raviolz.ReservationManagement.entities.User;
 import raviolz.ReservationManagement.entities.Workspace;
+import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
+import raviolz.ReservationManagement.exceptions.NotFoundException;
+import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.services.BuildingService;
+import raviolz.ReservationManagement.services.ReservationService;
 import raviolz.ReservationManagement.services.UserService;
 import raviolz.ReservationManagement.services.WorkspaceService;
+
+import java.time.LocalDate;
 
 @Slf4j
 @Component
@@ -18,12 +26,13 @@ public class RunnerTest implements CommandLineRunner {
     private final UserService uService;
     private final WorkspaceService wsService;
     private final BuildingService bService;
+    private final ReservationService rService;
 
-    public RunnerTest(UserService uService, WorkspaceService wsService, BuildingService bService) {
+    public RunnerTest(UserService uService, WorkspaceService wsService, BuildingService bService, ReservationService rService) {
         this.uService = uService;
         this.wsService = wsService;
         this.bService = bService;
-
+        this.rService = rService;
     }
 
 
@@ -64,16 +73,16 @@ public class RunnerTest implements CommandLineRunner {
 
         // find user
 
-//        User u1DB = uService.findUser(1L);
-//        User u2DB = uService.findUser(2L);
-//        User u3DB = uService.findUser(3L);
-//        User u4DB = uService.findUser(4L);
-//        User u5DB = uService.findUser(5L);
-//        User u6DB = uService.findUser(6L);
-//        User u7DB = uService.findUser(7L);
-//        User u8DB = uService.findUser(8L);
-//        User u9DB = uService.findUser(9L);
-//        User u10DB = uService.findUser(10L);
+        User u1DB = uService.findUser(1L);
+        User u2DB = uService.findUser(2L);
+        User u3DB = uService.findUser(3L);
+        User u4DB = uService.findUser(4L);
+        User u5DB = uService.findUser(5L);
+        User u6DB = uService.findUser(6L);
+        User u7DB = uService.findUser(7L);
+        User u8DB = uService.findUser(8L);
+        User u9DB = uService.findUser(9L);
+        User u10DB = uService.findUser(10L);
 
         // test exception
 
@@ -195,5 +204,35 @@ public class RunnerTest implements CommandLineRunner {
         Workspace ws9DB = wsService.findWorkspace(9L);
         Workspace ws10DB = wsService.findWorkspace(10L);
 
+
+        // RESERVATION TEST
+
+        // save
+        try {
+            Reservation r1 = new Reservation(
+                    LocalDate.now().plusDays(4),
+                    ws8DB,
+                    u1DB
+            );
+            rService.saveReservation(r1);
+
+        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
+            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+        }
+
+
+        // eccezioni test per tutto
+
+        try {
+            Reservation r1001 = new Reservation(
+                    LocalDate.now().minusDays(4),
+                    ws8DB,
+                    u2DB
+            );
+            rService.saveReservation(r1001);
+
+        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
+            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+        }
     }
 }

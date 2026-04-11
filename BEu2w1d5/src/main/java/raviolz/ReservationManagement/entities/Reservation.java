@@ -32,7 +32,7 @@ public class Reservation {
 
     public Reservation(LocalDate resDate, Workspace workspace, User user) {
         if (resDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Troppo tardi!");
+            throw new ValidationException("Troppo tardi!");
         }
         this.resDate = resDate;
         this.workspace = workspace;
