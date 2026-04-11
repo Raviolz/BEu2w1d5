@@ -4,10 +4,8 @@ package raviolz.ReservationManagement.entities.runners;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import raviolz.ReservationManagement.entities.Building;
-import raviolz.ReservationManagement.entities.Reservation;
-import raviolz.ReservationManagement.entities.User;
-import raviolz.ReservationManagement.entities.Workspace;
+import raviolz.ReservationManagement.entities.*;
+import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
 import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.services.BuildingService;
@@ -45,10 +43,10 @@ public class RunnerTest implements CommandLineRunner {
 //            User u1 = new User("PieroBalos", "Pietro Baldelli", "pierobalos@gmail.com");
 //            uService.saveUser(u1);
 //
-//            log.info("Utente" + u1.getUsername() + " salvato con successo!"); // gia nel service.. doppio log 1 salvataggio giusto
+//            log.info("Utente" + u1.getUsername() + " salvato con successo!"); //  gia nel service.. doppio log 1 salvataggio giusto
 //
 //        } catch (AlreadyExistsException | ValidationException e) {
-//            log.error("Errore salvataggio utente: {}" , e.getMessage());
+//            log.error("Errore salvataggio utente: {}", e.getMessage());
 //        }
 
         //eccezioni --> duplicati, vuoti e mail senza chioccola
@@ -97,7 +95,7 @@ public class RunnerTest implements CommandLineRunner {
         //salva
 
 //        try {
-//            Building b1 = new Building("Palazzo Strozzi", "Via Berti 1", "Firenze");
+//            Building b1 = new Building("Fortezza del Basso", "Via Berti 1", "Firenze");
 //            bService.saveBuilding(b1);
 //        } catch (AlreadyExistsException | ValidationException e) {
 //            log.error("Errore nel salvataggio dell edificio: {}", e.getMessage());
@@ -122,7 +120,9 @@ public class RunnerTest implements CommandLineRunner {
         Building b8 = new Building("Polo Tecnologico Pisa", "Via Matteotti 9", "Pisa");
         Building b9 = new Building("Hub Verona", "Via Mazzini 27", "Verona");
         Building b10 = new Building("Business Center Bari", "Via Sparano 52", "Bari");
-
+        Building b11 = new Building("Palazzo Strozzi", "Piazza degli Strozzi 1", "Firenze");
+        Building b12 = new Building("Maggio Musicale", "Parta al Prato 20", "Firenze");
+//
 //        bService.saveBuilding(b2);
 //        bService.saveBuilding(b3);
 //        bService.saveBuilding(b4);
@@ -132,10 +132,12 @@ public class RunnerTest implements CommandLineRunner {
 //        bService.saveBuilding(b8);
 //        bService.saveBuilding(b9);
 //        bService.saveBuilding(b10);
+//        bService.saveBuilding(b11);
+//        bService.saveBuilding(b12);
 
 
         // find building
-
+        Building b1DB = bService.findBuilding(1L);
         Building b2DB = bService.findBuilding(2L);
         Building b3DB = bService.findBuilding(3L);
         Building b4DB = bService.findBuilding(4L);
@@ -145,6 +147,8 @@ public class RunnerTest implements CommandLineRunner {
         Building b8DB = bService.findBuilding(8L);
         Building b9DB = bService.findBuilding(9L);
         Building b10DB = bService.findBuilding(10L);
+        Building b11DB = bService.findBuilding(11L);
+        Building b12DB = bService.findBuilding(12L);
 
         //   log.info("Edificio recuperato: {}", b2DB.getName()); // potevo metterlo direttamente nel metodo.. l ho negli altri
 
@@ -160,7 +164,7 @@ public class RunnerTest implements CommandLineRunner {
         // save
 
 //        try {
-//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, b9DB);
+//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, b5DB);
 //            wsService.saveWorkspace(ws1);
 //        } catch (AlreadyExistsException | ValidationException e) {
 //            log.error("Errore nel salvataggio della postazione : {}", e.getMessage());
@@ -169,7 +173,7 @@ public class RunnerTest implements CommandLineRunner {
         //eccezioni --> duplicati e vuoti, uguale a zero
 
 //        try {
-//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, b9DB);
+//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, b5DB);
 //            wsService.saveWorkspace(ws1);
 //        } catch (AlreadyExistsException | ValidationException e) {
 //            log.error("Errore nel salvataggio della postazione : {}", e.getMessage());
@@ -179,20 +183,20 @@ public class RunnerTest implements CommandLineRunner {
 
 
 //        List<Workspace> workspaces = List.of(
-//                //   new Workspace("WS-FI-001", "Ufficio privato piano terra", WorkspaceType.PRIVATE, 2, b2DB),
-////                new Workspace("WS-FI-002", "Open space con 20 postazioni", WorkspaceType.OPENSPACE, 20, b2DB),
-////                new Workspace("WS-FI-003", "Sala riunioni con proiettore", WorkspaceType.MEETING_ROOM, 100, b2DB),
-////                new Workspace("WS-FI-004", "Ufficio privato con balcone", WorkspaceType.PRIVATE, 3, b4DB),
-////                new Workspace("WS-FI-005", "Open space luminoso", WorkspaceType.OPENSPACE, 80, b5DB),
-////                new Workspace("WS-MI-001", "Sala riunioni executive", WorkspaceType.MEETING_ROOM, 45, b2DB),
-////                new Workspace("WS-RM-001", "Open space moderno", WorkspaceType.OPENSPACE, 10, b3DB),
-////                new Workspace("WS-BO-001", "Ufficio privato silenzioso", WorkspaceType.PRIVATE, 5, b6DB),
-////                new Workspace("WS-TO-001", "Sala meeting con videoconferenza", WorkspaceType.MEETING_ROOM, 40, b7DB),
-//                new Workspace("WS-NA-001", "Open space panoramico", WorkspaceType.OPENSPACE, 7, b8DB)
-//        );
+//                new Workspace("WS-FI-001", "Ufficio privato piano terra", WorkspaceType.OPENSPACE, 2, b1DB),
+//                new Workspace("WS-FI-002", "Open space con 20 postazioni", WorkspaceType.OPENSPACE, 20, b12DB),
+//                new Workspace("WS-FI-003", "Sala riunioni con proiettore", WorkspaceType.MEETING_ROOM, 100, b11DB),
+//                new Workspace("WS-FI-004", "Ufficio privato con balcone", WorkspaceType.PRIVATE, 3, b11DB),
+//                new Workspace("WS-FI-005", "Open space luminoso", WorkspaceType.OPENSPACE, 80, b1DB),
+//                new Workspace("WS-MI-001", "Sala riunioni executive", WorkspaceType.MEETING_ROOM, 45, b2DB),
+//                new Workspace("WS-RM-001", "Open space moderno", WorkspaceType.OPENSPACE, 10, b3DB),
+//                new Workspace("WS-BO-001", "Ufficio privato silenzioso", WorkspaceType.PRIVATE, 5, b4DB),
+//                new Workspace("WS-TO-002", "Sala meeting con videoconferenza", WorkspaceType.MEETING_ROOM, 40, b5DB),
+//                new Workspace("WS-NA-001", "Open space panoramico", WorkspaceType.OPENSPACE, 7, b6DB)
+        //    );
 //
 //        workspaces.forEach(wsService::saveWorkspace);
-
+//
         Workspace ws1DB = wsService.findWorkspace(1L);
         Workspace ws2DB = wsService.findWorkspace(2L);
         Workspace ws3DB = wsService.findWorkspace(3L);
@@ -208,17 +212,17 @@ public class RunnerTest implements CommandLineRunner {
         // RESERVATION TEST
 
         // save
-//        try {
-//            Reservation r1 = new Reservation(
-//                    LocalDate.now().plusDays(4),
-//                    ws8DB,
-//                    u1DB
-//            );
-//            rService.saveReservation(r1);
-//
-//        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
-//            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
-//        }
+        try {
+            Reservation r1 = new Reservation(
+                    LocalDate.now().plusDays(4),
+                    ws8DB,
+                    u1DB
+            );
+            rService.saveReservation(r1);
+
+        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
+            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+        }
 
 
         // eccezioni save test per tutto
@@ -247,7 +251,7 @@ public class RunnerTest implements CommandLineRunner {
 //        rService.saveReservation(new Reservation(LocalDate.of(2026, 6, 14), ws4DB, u10DB));
 
 
-        // find reservation  piu eccezioni (non riscrivo cambio e basta per non ariivare a millemila righe)
+        // find reservation  piu eccezioni (non riscrivo cambio e basta per non arrivare a millemila righe)
 //        try {
 //            Reservation r1DB = rService.findResById(1L);
 //        } catch (ValidationException | NotFoundException ex) {
@@ -257,39 +261,59 @@ public class RunnerTest implements CommandLineRunner {
 
         // find per data
 
-        try {
-            List<Reservation> rx1del5 = rService.findByDate(LocalDate.of(2026, 5, 1));
-            rx1del5.forEach(res -> log.info("Prenotazione con id : {}, a nome: {}, postazione: {}, in data: {}",
-                    res.getId(),
-                    res.getUser().getFullName(),
-                    res.getWorkspace().getCode(),
-                    res.getResDate()));                       // forse un po eccessivo per troppe prenotazioni
-        } catch (ValidationException | NotFoundException ex) {
-            log.error("Errore: {}", ex.getMessage());
-        }
+//        try {
+//            List<Reservation> rx1del5 = rService.findByDate(LocalDate.of(2026, 5, 1));
+//            rx1del5.forEach(res -> log.info("Prenotazione con id : {}, a nome: {}, postazione: {}, in data: {}",
+//                    res.getId(),
+//                    res.getUser().getFullName(),
+//                    res.getWorkspace().getCode(),
+//                    res.getResDate()));                        //forse un po eccessivo per troppe prenotazioni
+//        } catch (ValidationException | NotFoundException ex) {
+//            log.error("Errore: {}", ex.getMessage());
+//        }
         // find per posto
 
-        try {
-            List<Reservation> rxFIOpenspace = rService.findByWorkspace(ws6DB);
-            rxFIOpenspace.forEach(res -> log.info("Prenotazione con id : {}, a nome: {}, in data: {}",
-                    res.getId(),
-                    res.getUser().getFullName(),
-                    res.getResDate()));
-        } catch (ValidationException | NotFoundException ex) {
-            log.error("Errore: {}", ex.getMessage());
-        }
+//        try {
+//            List<Reservation> rxFIOpenspace = rService.findByWorkspace(ws6DB);
+//            rxFIOpenspace.forEach(res -> log.info("Prenotazione con id : {}, a nome: {}, in data: {}",
+//                    res.getId(),
+//                    res.getUser().getFullName(),
+//                    res.getResDate()));
+//        } catch (ValidationException | NotFoundException ex) {
+//            log.error("Errore: {}", ex.getMessage());
+//        }
 
 
         // find per persona
 
-        List<Reservation> rxGiulia = rService.findByUser(u3DB);
+//        List<Reservation> rxGiulia = rService.findByUser(u3DB);
+//        try {
+//            rxGiulia.forEach(res -> log.info("Prenotazione con id : {}, postazione: {}, in data: {}",
+//                    res.getId(),
+//                    res.getWorkspace().getCode(),
+//                    res.getResDate()));
+//        } catch (ValidationException | NotFoundException ex) {
+//            log.error("Errore: {}", ex.getMessage());
+//        }
+
+        // CERCA POSTAZIONI PER CITTA' E TIPO POSTAZIONE
+
+
         try {
-            rxGiulia.forEach(res -> log.info("Prenotazione con id : {}, postazione: {}, in data: {}",
-                    res.getId(),
-                    res.getWorkspace().getCode(),
-                    res.getResDate()));
-        } catch (ValidationException | NotFoundException ex) {
+            List<Workspace> wsFiPrivate = wsService.findByTypeAndCity(WorkspaceType.OPENSPACE, "Firenze");
+
+            wsFiPrivate.forEach(ws -> log.info(
+                    "Workspace -> id: {}, code: {}, edificio: {}, città: {}",
+                    ws.getId(),
+                    ws.getCode(),
+                    ws.getBuilding().getName(),
+                    ws.getBuilding().getCity()
+            ));
+        } catch (ValidationException ex) {
             log.error("Errore: {}", ex.getMessage());
         }
+
     }
+
+
 }

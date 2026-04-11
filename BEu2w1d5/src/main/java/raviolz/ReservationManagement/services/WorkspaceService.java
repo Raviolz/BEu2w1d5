@@ -3,10 +3,13 @@ package raviolz.ReservationManagement.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import raviolz.ReservationManagement.entities.Workspace;
+import raviolz.ReservationManagement.entities.WorkspaceType;
 import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
 import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.repositories.WorkspaceRepository;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -52,5 +55,18 @@ public class WorkspaceService {
                 .orElseThrow(() -> new NotFoundException("Postazione con id " + id + "non trovata"));
         log.info("Postazione nel palazzo {} con id {} trovato", ws.getBuilding().getName(), ws.getId());
         return ws;
+    }
+
+    public List<Workspace> findByTypeAndCity(WorkspaceType type, String city) {
+        if (type == null) {
+            throw new ValidationException("Il tipo di postazione e' obbligatorio");
+        }
+        if (city == null || city.isBlank()) {
+            throw new ValidationException("Inserisci una citta' in cui abbiamo delle postazioni");
+        }
+
+        List<Workspace> result = wsRepository.findByTypeAndCity(type, city);
+        log.info("Trovate {} postazionie di tipo {} nella città {}", result.size(), type, city);
+        return result;
     }
 }
