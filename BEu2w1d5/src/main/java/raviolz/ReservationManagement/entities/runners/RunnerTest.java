@@ -8,7 +8,6 @@ import raviolz.ReservationManagement.entities.Building;
 import raviolz.ReservationManagement.entities.Reservation;
 import raviolz.ReservationManagement.entities.User;
 import raviolz.ReservationManagement.entities.Workspace;
-import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
 import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.services.BuildingService;
@@ -17,6 +16,7 @@ import raviolz.ReservationManagement.services.UserService;
 import raviolz.ReservationManagement.services.WorkspaceService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -136,15 +136,15 @@ public class RunnerTest implements CommandLineRunner {
 
         // find building
 
-//        Building b2DB = bService.findBuilding(2L);
-//        Building b3DB = bService.findBuilding(3L);
-//        Building b4DB = bService.findBuilding(4L);
-//        Building b5DB = bService.findBuilding(5L);
-//        Building b6DB = bService.findBuilding(6L);
-//        Building b7DB = bService.findBuilding(7L);
-//        Building b8DB = bService.findBuilding(8L);
-//        Building b9DB = bService.findBuilding(9L);
-//        Building b10DB = bService.findBuilding(10L);
+        Building b2DB = bService.findBuilding(2L);
+        Building b3DB = bService.findBuilding(3L);
+        Building b4DB = bService.findBuilding(4L);
+        Building b5DB = bService.findBuilding(5L);
+        Building b6DB = bService.findBuilding(6L);
+        Building b7DB = bService.findBuilding(7L);
+        Building b8DB = bService.findBuilding(8L);
+        Building b9DB = bService.findBuilding(9L);
+        Building b10DB = bService.findBuilding(10L);
 
         //   log.info("Edificio recuperato: {}", b2DB.getName()); // potevo metterlo direttamente nel metodo.. l ho negli altri
 
@@ -208,31 +208,88 @@ public class RunnerTest implements CommandLineRunner {
         // RESERVATION TEST
 
         // save
-        try {
-            Reservation r1 = new Reservation(
-                    LocalDate.now().plusDays(4),
-                    ws8DB,
-                    u1DB
-            );
-            rService.saveReservation(r1);
+//        try {
+//            Reservation r1 = new Reservation(
+//                    LocalDate.now().plusDays(4),
+//                    ws8DB,
+//                    u1DB
+//            );
+//            rService.saveReservation(r1);
+//
+//        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
+//            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+//        }
 
-        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
-            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+
+        // eccezioni save test per tutto
+
+//        try {
+//            Reservation r1001 = new Reservation(
+//                    LocalDate.now().minusDays(4),
+//                    ws8DB,
+//                    u2DB
+//            );
+//            rService.saveReservation(r1001);
+//
+//        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
+//            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+//        }
+
+// riempio
+//        rService.saveReservation(new Reservation(LocalDate.now().plusDays(3), ws8DB, u3DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 5, 4), ws8DB, u3DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 4, 19), ws1DB, u4DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 5, 1), ws2DB, u5DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 5, 1), ws8DB, u3DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 7, 3), ws6DB, u3DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 11, 22), ws6DB, u9DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 9, 28), ws5DB, u9DB));
+//        rService.saveReservation(new Reservation(LocalDate.of(2026, 6, 14), ws4DB, u10DB));
+
+
+        // find reservation  piu eccezioni (non riscrivo cambio e basta per non ariivare a millemila righe)
+//        try {
+//            Reservation r1DB = rService.findResById(1L);
+//        } catch (ValidationException | NotFoundException ex) {
+//            log.error("Errore: {}", ex.getMessage());
+//        }
+
+
+        // find per data
+
+        try {
+            List<Reservation> rx1del5 = rService.findByDate(LocalDate.of(2026, 5, 1));
+            rx1del5.forEach(res -> log.info("Prenotazione con id : {}, a nome: {}, postazione: {}, in data: {}",
+                    res.getId(),
+                    res.getUser().getFullName(),
+                    res.getWorkspace().getCode(),
+                    res.getResDate()));                       // forse un po eccessivo per troppe prenotazioni
+        } catch (ValidationException | NotFoundException ex) {
+            log.error("Errore: {}", ex.getMessage());
+        }
+        // find per posto
+
+        try {
+            List<Reservation> rxFIOpenspace = rService.findByWorkspace(ws6DB);
+            rxFIOpenspace.forEach(res -> log.info("Prenotazione con id : {}, a nome: {}, in data: {}",
+                    res.getId(),
+                    res.getUser().getFullName(),
+                    res.getResDate()));
+        } catch (ValidationException | NotFoundException ex) {
+            log.error("Errore: {}", ex.getMessage());
         }
 
 
-        // eccezioni test per tutto
+        // find per persona
 
+        List<Reservation> rxGiulia = rService.findByUser(u3DB);
         try {
-            Reservation r1001 = new Reservation(
-                    LocalDate.now().minusDays(4),
-                    ws8DB,
-                    u2DB
-            );
-            rService.saveReservation(r1001);
-
-        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
-            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+            rxGiulia.forEach(res -> log.info("Prenotazione con id : {}, postazione: {}, in data: {}",
+                    res.getId(),
+                    res.getWorkspace().getCode(),
+                    res.getResDate()));
+        } catch (ValidationException | NotFoundException ex) {
+            log.error("Errore: {}", ex.getMessage());
         }
     }
 }
