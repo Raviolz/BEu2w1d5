@@ -36,7 +36,7 @@ public class WorkspaceService {
         }
 
         if (wsRepository.existsByCode(newWorkspace.getCode())) {
-            throw new AlreadyExistsException("Questa postazione e' gia salvata nel DB");
+            throw new AlreadyExistsException("Questa postazione " + newWorkspace.getCode() + " e' gia salvata nel DB");
         }
 
         wsRepository.save(newWorkspace);

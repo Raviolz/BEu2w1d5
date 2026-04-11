@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import raviolz.ReservationManagement.entities.Building;
-import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
-import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.services.BuildingService;
 import raviolz.ReservationManagement.services.UserService;
 import raviolz.ReservationManagement.services.WorkspaceService;
@@ -67,12 +65,12 @@ public class RunnerTest implements CommandLineRunner {
 //        }
 
         //eccezioni --> duplicati e vuoti
-        try {
-            Building b1 = new Building(" ", "Via Berti 1", "Firenze");
-            bService.saveBuilding(b1);
-        } catch (AlreadyExistsException | ValidationException e) {
-            log.error("Errore nel salvataggio dell edificio: {}", e.getMessage());
-        }
+        //       try {
+        //           Building b1 = new Building(" ", "Via Berti 1", "Firenze");
+        //         bService.saveBuilding(b1);
+        //    } catch (AlreadyExistsException | ValidationException e) {
+        //      log.error("Errore nel salvataggio dell edificio: {}", e.getMessage());
+        // }
 
 
         // riempio
@@ -86,48 +84,67 @@ public class RunnerTest implements CommandLineRunner {
         Building b9 = new Building("Hub Verona", "Via Mazzini 27", "Verona");
         Building b10 = new Building("Business Center Bari", "Via Sparano 52", "Bari");
 
-        bService.saveBuilding(b2);
-        bService.saveBuilding(b3);
-        bService.saveBuilding(b4);
-        bService.saveBuilding(b5);
-        bService.saveBuilding(b6);
-        bService.saveBuilding(b7);
-        bService.saveBuilding(b8);
-        bService.saveBuilding(b9);
-        bService.saveBuilding(b10);
+//        bService.saveBuilding(b2);
+//        bService.saveBuilding(b3);
+//        bService.saveBuilding(b4);
+//        bService.saveBuilding(b5);
+//        bService.saveBuilding(b6);
+//        bService.saveBuilding(b7);
+//        bService.saveBuilding(b8);
+//        bService.saveBuilding(b9);
+//        bService.saveBuilding(b10);
 
-// TODO: FARE IL FIND PRIMA DI ASSOCIARE IL BUILDING
+
+        // find building
+
+        Building b2DB = bService.findById(2L);
+        Building b3DB = bService.findById(3L);
+        Building b4DB = bService.findById(4L);
+        Building b5DB = bService.findById(5L);
+        Building b6DB = bService.findById(6L);
+        Building b7DB = bService.findById(7L);
+        Building b8DB = bService.findById(8L);
+        Building b9DB = bService.findById(9L);
+        Building b10DB = bService.findById(10L);
+
+        log.info("Edificio recuperato: {}", b2DB.getName()); // potevo metterlo direttamente nel metodo ma non volevo appesantirlo
+
+
         // TEST WORKSPACE
         // save
 
 //        try {
-//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, b1 );
+//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, b9DB);
 //            wsService.saveWorkspace(ws1);
 //        } catch (AlreadyExistsException | ValidationException e) {
-//            log.error("Errore nel salvataggio della postazioone : {}", e.getMessage());
+//            log.error("Errore nel salvataggio della postazione : {}", e.getMessage());
 //        }
 
         //eccezioni --> duplicati e vuoti, uguale a zero
 
 //        try {
-//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, );
+//            Workspace ws1 = new Workspace("WS-TO-001", "Postazione openspace con vista giardini", WorkspaceType.OPENSPACE, 28, b9DB);
 //            wsService.saveWorkspace(ws1);
 //        } catch (AlreadyExistsException | ValidationException e) {
-//            log.error("Errore nel salvataggio della postazioone : {}", e.getMessage());
+//            log.error("Errore nel salvataggio della postazione : {}", e.getMessage());
 //        }
 
-//        // riempio
-//        Workspace w1 = new Workspace("WS-FI-001", "Ufficio privato piano terra", WorkspaceType.PRIVATE, 2, b2);
-//        Workspace w2 = new Workspace("WS-FI-002", "Open space con 20 postazioni", WorkspaceType.OPENSPACE, 20, b2);
-//        Workspace w3 = new Workspace("WS-FI-003", "Sala riunioni con proiettore", WorkspaceType.MEETING_ROOM, 100, b2);
-//        Workspace w4 = new Workspace("WS-FI-004", "Ufficio privato con balcone", WorkspaceType.PRIVATE, 3, b4);
-//        Workspace w5 = new Workspace("WS-FI-005", "Open space luminoso", WorkspaceType.OPENSPACE, 80, b5);
+//        // riempio con lista
+
+
+//        List<Workspace> workspaces = List.of(
+//                //   new Workspace("WS-FI-001", "Ufficio privato piano terra", WorkspaceType.PRIVATE, 2, b2DB),
+////                new Workspace("WS-FI-002", "Open space con 20 postazioni", WorkspaceType.OPENSPACE, 20, b2DB),
+////                new Workspace("WS-FI-003", "Sala riunioni con proiettore", WorkspaceType.MEETING_ROOM, 100, b2DB),
+////                new Workspace("WS-FI-004", "Ufficio privato con balcone", WorkspaceType.PRIVATE, 3, b4DB),
+////                new Workspace("WS-FI-005", "Open space luminoso", WorkspaceType.OPENSPACE, 80, b5DB),
+////                new Workspace("WS-MI-001", "Sala riunioni executive", WorkspaceType.MEETING_ROOM, 45, b2DB),
+////                new Workspace("WS-RM-001", "Open space moderno", WorkspaceType.OPENSPACE, 10, b3DB),
+////                new Workspace("WS-BO-001", "Ufficio privato silenzioso", WorkspaceType.PRIVATE, 5, b6DB),
+////                new Workspace("WS-TO-001", "Sala meeting con videoconferenza", WorkspaceType.MEETING_ROOM, 40, b7DB),
+//                new Workspace("WS-NA-001", "Open space panoramico", WorkspaceType.OPENSPACE, 7, b8DB)
+//        );
 //
-//        Workspace w6 = new Workspace("WS-MI-001", "Sala riunioni executive", WorkspaceType.MEETING_ROOM, 45, b2);
-//        Workspace w7 = new Workspace("WS-RM-001", "Open space moderno", WorkspaceType.OPENSPACE, 10, b3);
-//        Workspace w8 = new Workspace("WS-BO-001", "Ufficio privato silenzioso", WorkspaceType.PRIVATE, 5, b6);
-//        Workspace w9 = new Workspace("WS-TO-001", "Sala meeting con videoconferenza", WorkspaceType.MEETING_ROOM, 40, b7);
-//        Workspace w10 = new Workspace("WS-NA-001", "Open space panoramico", WorkspaceType.OPENSPACE,  7, b8);
-//
+//        workspaces.forEach(wsService::saveWorkspace);
     }
 }

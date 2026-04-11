@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import raviolz.ReservationManagement.entities.Building;
 import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
+import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.repositories.BuildingRepository;
 
@@ -38,6 +39,16 @@ public class BuildingService {
         bRepository.save(newBuilding);
         log.info("L'edificio {} è stato salvato correttamente!", newBuilding.getName());
     }
+
+
+    public Building findById(Long id) {
+        if (id == null) {
+            throw new ValidationException("Inserisci un id");
+        }
+        return bRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Edificio con id" + id + " non trovato"));
+    }
 }
+
 
 
