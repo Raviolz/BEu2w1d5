@@ -41,9 +41,9 @@ public class BuildingService {
     }
 
 
-    public Building findById(Long id) {
+    public Building findBuilding(Long id) {
         if (id == null) {
-            throw new ValidationException("Inserisci un id");
+            throw new ValidationException("Inserisci un id valido");
         }
         return bRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Edificio con id" + id + " non trovato"));

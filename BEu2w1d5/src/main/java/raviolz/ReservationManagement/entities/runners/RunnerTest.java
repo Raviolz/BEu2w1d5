@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import raviolz.ReservationManagement.entities.Building;
+import raviolz.ReservationManagement.entities.Workspace;
 import raviolz.ReservationManagement.services.BuildingService;
 import raviolz.ReservationManagement.services.UserService;
 import raviolz.ReservationManagement.services.WorkspaceService;
@@ -51,7 +52,36 @@ public class RunnerTest implements CommandLineRunner {
 //        } catch (AlreadyExistsException | ValidationException e) {
 //            log.error("Errore salvataggio utente: {}", e.getMessage());
 //        }
+//        uService.saveUser(new User("LucaRossi", "Luca Rossi", "luca.rossi@gmail.com"));
+//        uService.saveUser(new User("GiuliaVerdi", "Giulia Verdi", "giulia.verdi@gmail.com"));
+//        uService.saveUser(new User("MarcoBianchi", "Marco Bianchi", "marco.bianchi@gmail.com"));
+//        uService.saveUser(new User("AnnaNeri", "Anna Neri", "anna.neri@gmail.com"));
+//        uService.saveUser(new User("FrancescoGallo", "Francesco Gallo", "francesco.gallo@gmail.com"));
+//        uService.saveUser(new User("SaraRomano", "Sara Romano", "sara.romano@gmail.com"));
+//        uService.saveUser(new User("MatteoGreco", "Matteo Greco", "matteo.greco@gmail.com"));
+//        uService.saveUser(new User("ElenaFerrari", "Elena Ferrari", "elena.ferrari@gmail.com"));
+//        uService.saveUser(new User("DavideConti", "Davide Conti", "davide.conti@gmail.com"));
 
+        // find user
+
+//        User u1DB = uService.findUser(1L);
+//        User u2DB = uService.findUser(2L);
+//        User u3DB = uService.findUser(3L);
+//        User u4DB = uService.findUser(4L);
+//        User u5DB = uService.findUser(5L);
+//        User u6DB = uService.findUser(6L);
+//        User u7DB = uService.findUser(7L);
+//        User u8DB = uService.findUser(8L);
+//        User u9DB = uService.findUser(9L);
+//        User u10DB = uService.findUser(10L);
+
+        // test exception
+
+//        try {
+//            User u101DB = uService.findUser(101L);
+//        } catch (NotFoundException ex) {
+//            log.error(ex.getMessage());
+//        }
 
         // TEST BUILDING
 
@@ -97,18 +127,25 @@ public class RunnerTest implements CommandLineRunner {
 
         // find building
 
-        Building b2DB = bService.findById(2L);
-        Building b3DB = bService.findById(3L);
-        Building b4DB = bService.findById(4L);
-        Building b5DB = bService.findById(5L);
-        Building b6DB = bService.findById(6L);
-        Building b7DB = bService.findById(7L);
-        Building b8DB = bService.findById(8L);
-        Building b9DB = bService.findById(9L);
-        Building b10DB = bService.findById(10L);
+//        Building b2DB = bService.findBuilding(2L);
+//        Building b3DB = bService.findBuilding(3L);
+//        Building b4DB = bService.findBuilding(4L);
+//        Building b5DB = bService.findBuilding(5L);
+//        Building b6DB = bService.findBuilding(6L);
+//        Building b7DB = bService.findBuilding(7L);
+//        Building b8DB = bService.findBuilding(8L);
+//        Building b9DB = bService.findBuilding(9L);
+//        Building b10DB = bService.findBuilding(10L);
 
-        log.info("Edificio recuperato: {}", b2DB.getName()); // potevo metterlo direttamente nel metodo ma non volevo appesantirlo
+        //   log.info("Edificio recuperato: {}", b2DB.getName()); // potevo metterlo direttamente nel metodo.. l ho negli altri
 
+        // test exception
+
+//        try {
+//            Building b101DB = bService.findBuilding(101L);
+//        } catch (NotFoundException ex) {
+//            log.error(ex.getMessage());
+//        }
 
         // TEST WORKSPACE
         // save
@@ -146,5 +183,17 @@ public class RunnerTest implements CommandLineRunner {
 //        );
 //
 //        workspaces.forEach(wsService::saveWorkspace);
+
+        Workspace ws1DB = wsService.findWorkspace(1L);
+        Workspace ws2DB = wsService.findWorkspace(2L);
+        Workspace ws3DB = wsService.findWorkspace(3L);
+        Workspace ws4DB = wsService.findWorkspace(4L);
+        Workspace ws5DB = wsService.findWorkspace(5L);
+        Workspace ws6DB = wsService.findWorkspace(6L);
+        Workspace ws7DB = wsService.findWorkspace(7L);
+        Workspace ws8DB = wsService.findWorkspace(8L);
+        Workspace ws9DB = wsService.findWorkspace(9L);
+        Workspace ws10DB = wsService.findWorkspace(10L);
+
     }
 }

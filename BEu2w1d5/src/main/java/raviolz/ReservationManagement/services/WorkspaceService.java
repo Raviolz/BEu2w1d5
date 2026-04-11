@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import raviolz.ReservationManagement.entities.Workspace;
 import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
+import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.repositories.WorkspaceRepository;
 
@@ -41,5 +42,15 @@ public class WorkspaceService {
 
         wsRepository.save(newWorkspace);
         log.info("La workspace {} è stata salvata correttamente!", newWorkspace.getCode());
+    }
+
+    public Workspace findWorkspace(Long id) {
+        if (id == null) {
+            throw new ValidationException("Devi inserire un id corretto");
+        }
+        Workspace ws = wsRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Postazione con id " + id + "non trovata"));
+        log.info("Postazione nel palazzo {} con id {} trovato", ws.getBuilding().getName(), ws.getId());
+        return ws;
     }
 }

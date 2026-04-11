@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import raviolz.ReservationManagement.entities.User;
 import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
+import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
 import raviolz.ReservationManagement.repositories.UserRepository;
 
@@ -44,6 +45,18 @@ public class UserService {
         log.info("Utente{}salvato con successo!", newUser.getUsername());
     }
 
+
+    public User findUser(Long id) {
+        if (id == null) {
+            throw new ValidationException("Devi inserire un id valido");
+        }
+        User user = uRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Utente con id " + id + " non trovato"));
+        log.info("Utente {} con id {} trovato", user.getFullName(), user.getId());
+        return user;
+    }
+
 }
+
 
 
