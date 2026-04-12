@@ -45,7 +45,7 @@ public class Workspace {
         this.description = description;
         this.workspaceType = workspaceType;
         if (maxCapacity <= 0) {
-            throw new IllegalArgumentException("Posto inutile");
+            throw new ValidationException("Posto inutile");
         }
         this.maxCapacity = maxCapacity;
         this.building = building;

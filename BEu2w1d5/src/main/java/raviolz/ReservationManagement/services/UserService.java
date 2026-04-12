@@ -56,6 +56,39 @@ public class UserService {
         return user;
     }
 
+    public User updateUser(Long id, String username, String fullName, String email) {
+        User user = uRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Utente con id " + id + " non trovato"));
+
+        if (username == null || username.isBlank()) {
+            throw new ValidationException("Username obbligatorio");
+        }
+
+        if (fullName == null || fullName.isBlank()) {
+            throw new ValidationException("Nome obbligatorio");
+        }
+
+        if (email == null || !email.contains("@")) {
+            throw new ValidationException("Email non valida");
+        }
+
+        // duplicati
+        if (!user.getUsername().equals(username) && // se uguale a quello in uso
+                uRepository.existsByUsername(username)) { // se esiste nel DB
+            throw new AlreadyExistsException("Username già in uso");
+        }
+
+        if (!user.getEmail().equals(email) &&
+                uRepository.existsByEmail(email)) {
+            throw new AlreadyExistsException("Email già in uso");
+        }
+
+        user.setUsername(username);
+        user.setFullName(fullName);
+        user.setEmail(email);
+
+        return uRepository.save(user);
+    }
 
 }
 

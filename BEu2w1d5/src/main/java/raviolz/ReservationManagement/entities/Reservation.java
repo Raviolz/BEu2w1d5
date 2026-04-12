@@ -39,10 +39,12 @@ public class Reservation {
         this.user = user;
     }
 
-    public void setResDate(LocalDate resDate) {
+    public void setResDate(LocalDate resDate) { // anche se lombok io sovrascrivo sembra funzionare
         if (resDate.isBefore(LocalDate.now())) {
             throw new ValidationException("Non puoi cambiare data con giorno passato");
+
         }
+        this.resDate = resDate;
     }
 
 

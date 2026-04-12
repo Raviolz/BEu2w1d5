@@ -4,7 +4,9 @@ package raviolz.ReservationManagement.entities.runners;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import raviolz.ReservationManagement.entities.*;
+import raviolz.ReservationManagement.entities.Building;
+import raviolz.ReservationManagement.entities.User;
+import raviolz.ReservationManagement.entities.Workspace;
 import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
 import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
@@ -12,9 +14,6 @@ import raviolz.ReservationManagement.services.BuildingService;
 import raviolz.ReservationManagement.services.ReservationService;
 import raviolz.ReservationManagement.services.UserService;
 import raviolz.ReservationManagement.services.WorkspaceService;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -89,6 +88,27 @@ public class RunnerTest implements CommandLineRunner {
 //        } catch (NotFoundException ex) {
 //            log.error(ex.getMessage());
 //        }
+
+
+        // update user
+
+        try {
+            User updatedUser = uService.updateUser(
+                    2L,
+                    "Luchino",
+                    "Luca Updated",
+                    "luchino.updated@gmail.com"
+            );
+
+            log.info("Utente aggiornato con successo: id={}, username={}, fullName={}, email={}",
+                    updatedUser.getId(),
+                    updatedUser.getUsername(),
+                    updatedUser.getFullName(),
+                    updatedUser.getEmail());
+
+        } catch (ValidationException | NotFoundException | AlreadyExistsException ex) {
+            log.error("Errore durante l aggiornamento utente: {}", ex.getMessage());
+        }
 
         // TEST BUILDING
 
@@ -212,17 +232,17 @@ public class RunnerTest implements CommandLineRunner {
         // RESERVATION TEST
 
         // save
-        try {
-            Reservation r1 = new Reservation(
-                    LocalDate.now().plusDays(4),
-                    ws8DB,
-                    u1DB
-            );
-            rService.saveReservation(r1);
-
-        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
-            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
-        }
+//        try {
+//            Reservation r1 = new Reservation(
+//                    LocalDate.now().plusDays(4),
+//                    ws8DB,
+//                    u1DB
+//            );
+//            rService.saveReservation(r1);
+//
+//        } catch (ValidationException | AlreadyExistsException | NotFoundException ex) {
+//            log.error("Errore durante la creazione della prenotazione: {}", ex.getMessage());
+//        }
 
 
         // eccezioni save test per tutto
@@ -299,19 +319,19 @@ public class RunnerTest implements CommandLineRunner {
         // CERCA POSTAZIONI PER CITTA' E TIPO POSTAZIONE
 
 
-        try {
-            List<Workspace> wsFiPrivate = wsService.findByTypeAndCity(WorkspaceType.OPENSPACE, "Firenze");
-
-            wsFiPrivate.forEach(ws -> log.info(
-                    "Workspace -> id: {}, code: {}, edificio: {}, città: {}",
-                    ws.getId(),
-                    ws.getCode(),
-                    ws.getBuilding().getName(),
-                    ws.getBuilding().getCity()
-            ));
-        } catch (ValidationException ex) {
-            log.error("Errore: {}", ex.getMessage());
-        }
+//        try {
+//            List<Workspace> wsFiPrivate = wsService.findByTypeAndCity(WorkspaceType.OPENSPACE, "Firenze");
+//
+//            wsFiPrivate.forEach(ws -> log.info(
+//                    "Workspace -> id: {}, code: {}, edificio: {}, città: {}",
+//                    ws.getId(),
+//                    ws.getCode(),
+//                    ws.getBuilding().getName(),
+//                    ws.getBuilding().getCity()
+//            ));
+//        } catch (ValidationException ex) {
+//            log.error("Errore: {}", ex.getMessage());
+//        }
 
     }
 
