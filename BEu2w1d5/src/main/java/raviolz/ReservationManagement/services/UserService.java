@@ -6,6 +6,7 @@ import raviolz.ReservationManagement.entities.User;
 import raviolz.ReservationManagement.exceptions.AlreadyExistsException;
 import raviolz.ReservationManagement.exceptions.NotFoundException;
 import raviolz.ReservationManagement.exceptions.ValidationException;
+import raviolz.ReservationManagement.repositories.ReservationRepository;
 import raviolz.ReservationManagement.repositories.UserRepository;
 
 @Slf4j
@@ -14,9 +15,11 @@ import raviolz.ReservationManagement.repositories.UserRepository;
 public class UserService {
 
     private final UserRepository uRepository;
+    private final ReservationRepository resRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ReservationRepository resRepository) {
         this.uRepository = userRepository;
+        this.resRepository = resRepository;
     }
 
 
@@ -57,8 +60,7 @@ public class UserService {
     }
 
     public User updateUser(Long id, String username, String fullName, String email) {
-        User user = uRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Utente con id " + id + " non trovato"));
+        User user = findUser(id);
 
         if (username == null || username.isBlank()) {
             throw new ValidationException("Username obbligatorio");
@@ -73,9 +75,9 @@ public class UserService {
         }
 
         // duplicati
-        if (!user.getUsername().equals(username) && // se uguale a quello in uso
-                uRepository.existsByUsername(username)) { // se esiste nel DB
-            throw new AlreadyExistsException("Username già in uso");
+        if (!user.getUsername().equals(username) && // se diverso a quello in uso
+                uRepository.existsByUsername(username)) { // ed se esiste nel DB
+            throw new AlreadyExistsException("Username già in uso"); // false e true ok perche' e' se stesso che trova nel db
         }
 
         if (!user.getEmail().equals(email) &&
@@ -83,11 +85,64 @@ public class UserService {
             throw new AlreadyExistsException("Email già in uso");
         }
 
+
         user.setUsername(username);
         user.setFullName(fullName);
         user.setEmail(email);
 
         return uRepository.save(user);
+    }
+
+// alternativa forse piu elegante ✨
+
+    public User updateUserQ(Long id, String username, String fullName, String email) {
+        User user = findUser(id);
+
+        if (username == null || username.isBlank()) {
+            throw new ValidationException("Username obbligatorio");
+        }
+
+        if (fullName == null || fullName.isBlank()) {
+            throw new ValidationException("Nome obbligatorio");
+        }
+
+        if (email == null || !email.contains("@")) {
+            throw new ValidationException("Email non valida");
+        }
+
+        // Controllo duplicati escludendo l'utente corrente
+        if (uRepository.existsByUsernameAndIdNot(username, id)) {
+            throw new AlreadyExistsException("Username già in uso");
+        }
+
+        if (uRepository.existsByEmailAndIdNot(email, id)) {
+            throw new AlreadyExistsException("Email già in uso");
+        }
+
+        user.setUsername(username);
+        user.setFullName(fullName);
+        user.setEmail(email);
+
+        User updatedUser = uRepository.save(user);
+        log.info("Utente con id {} aggiornato correttamente", updatedUser.getId());
+
+        return updatedUser;
+    }
+
+
+    public void deleteUser(Long id) {
+        if (id == null) {
+            throw new ValidationException("Devi inserire un id valido");
+        }
+
+        User user = findUser(id);
+
+        if (resRepository.existsByUser(user)) {
+            throw new ValidationException("Non puoi eliminare un utente che ha prenotazioni attive");
+        }
+
+        uRepository.delete(user);
+        log.info("Utente {} con id {} eliminato correttamente", user.getUsername(), user.getId());
     }
 
 }

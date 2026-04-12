@@ -21,4 +21,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByUser(User user);
 
     List<Reservation> findByWorkspace(Workspace workspace);
+
+    boolean existsByUser(User user);
 }

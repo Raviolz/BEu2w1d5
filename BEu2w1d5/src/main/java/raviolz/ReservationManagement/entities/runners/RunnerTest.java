@@ -77,7 +77,7 @@ public class RunnerTest implements CommandLineRunner {
         User u5DB = uService.findUser(5L);
         User u6DB = uService.findUser(6L);
         User u7DB = uService.findUser(7L);
-        User u8DB = uService.findUser(8L);
+        //  User u8DB = uService.findUser(8L);
         User u9DB = uService.findUser(9L);
         User u10DB = uService.findUser(10L);
 
@@ -90,14 +90,34 @@ public class RunnerTest implements CommandLineRunner {
 //        }
 
 
-        // update user
+        // update user ed eccezioni
+
+//        try {
+//            User updatedUser = uService.updateUser(
+//                    2L,
+//                    "Luchino",
+//                    "Luca Updated",
+//                    "luchino.updated@gmail.com"
+//            );
+//
+//            log.info("Utente aggiornato con successo: id={}, username={}, fullName={}, email={}",
+//                    updatedUser.getId(),
+//                    updatedUser.getUsername(),
+//                    updatedUser.getFullName(),
+//                    updatedUser.getEmail());
+//
+//        } catch (ValidationException | NotFoundException | AlreadyExistsException ex) {
+//            log.error("Errore durante l aggiornamento utente: {}", ex.getMessage());
+//        }
+
+        // test secondo update
 
         try {
-            User updatedUser = uService.updateUser(
+            User updatedUser = uService.updateUserQ(
                     2L,
-                    "Luchino",
-                    "Luca Updated",
-                    "luchino.updated@gmail.com"
+                    "PieroBalos",
+                    "Luca Updated2",
+                    "luchino.updated2@gmail.com"
             );
 
             log.info("Utente aggiornato con successo: id={}, username={}, fullName={}, email={}",
@@ -110,6 +130,14 @@ public class RunnerTest implements CommandLineRunner {
             log.error("Errore durante l aggiornamento utente: {}", ex.getMessage());
         }
 
+
+        // delete con eccezioni
+
+//        try {
+//            uService.deleteUser(u8DB.getId());
+//        } catch (ValidationException | NotFoundException ex) {
+//            log.error("Errore: {}", ex.getMessage());
+//        }
         // TEST BUILDING
 
         //salva
